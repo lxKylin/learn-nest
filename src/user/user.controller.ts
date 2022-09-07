@@ -6,6 +6,9 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
+  HttpException,
+  HttpStatus
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -22,7 +25,7 @@ export class UserController {
 
   @Post()
   @ApiOperation({
-    summary: '添加用户', // 接口描述信息
+    summary: '添加用户' // 接口描述信息
   })
   // @Body是指获取到（http请求）客户端传递过来的body体中的数据，将数据给createUserDto这个变量，CreateUserDto是TS类型约束
   // createUserDto可自定义
@@ -31,14 +34,20 @@ export class UserController {
   }
 
   @Get()
-  findAll() {
+  findAll(@Query() paginations) {
+    // const { limit, offset } = paginations;
+    // return `This action returns all user Limit:${limit}, offset:${offset}`;
     return this.userService.findAll();
   }
 
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.userService.findOne(+id);
-  // }
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    const user = this.userService.findOne(+id);
+    if (!user) {
+      throw new HttpException(`${id} not found`, HttpStatus.NOT_FOUND);
+    }
+    return user;
+  }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
