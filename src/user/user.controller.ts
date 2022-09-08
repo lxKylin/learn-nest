@@ -13,6 +13,7 @@ import {
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { PaginationQueryDto } from '@/common/dto/pagination-query.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
 // 设置swagger文档标签分类
@@ -34,10 +35,8 @@ export class UserController {
   }
 
   @Get()
-  findAll(@Query() paginations) {
-    // const { limit, offset } = paginations;
-    // return `This action returns all user Limit:${limit}, offset:${offset}`;
-    return this.userService.findAll();
+  findAll(@Query() paginationQuery: PaginationQueryDto) {
+    return this.userService.findAll(paginationQuery);
   }
 
   @Get(':id')

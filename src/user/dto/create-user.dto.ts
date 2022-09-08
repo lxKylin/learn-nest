@@ -8,7 +8,12 @@ export class CreateUserDto {
   @ApiProperty({ description: '用户名', default: 'Kylin' })
   @IsString()
   readonly username: string;
+
   @ApiProperty({ description: '密码', default: 'siJue' })
   @IsString()
   readonly password: string;
+
+  @ApiProperty({ description: '角色', default: 'admin' })
+  @IsString({ each: true })
+  readonly roles: string[];
 }

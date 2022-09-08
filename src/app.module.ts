@@ -5,6 +5,7 @@ import { Connection } from 'typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
+import { RoleModule } from './role/role.module';
 
 // nest中的模块装饰器
 /**
@@ -23,7 +24,8 @@ import { UserModule } from './user/user.module';
       autoLoadEntities: true, // 自动加载模块
       // entities: [User],
       synchronize: true // 开启同步，生产中要禁止
-    })
+    }),
+    RoleModule
   ], // 用于引入子模块
   // 1
   controllers: [AppController],

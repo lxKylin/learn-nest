@@ -13,7 +13,14 @@ async function bootstrap() {
   // 启动全局字段校验，保证请求接口字段校验正确
   // 对传入客户端的值强制执行验证规则
   // 需要装两个依赖 yarn add class-validator class-transformer
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transformOptions: {
+        // 全局启用隐式转换，不再需要使用@Type()装饰器指定类型
+        enableImplicitConversion: true
+      }
+    })
+  );
 
   // 创建swagger接口文档
   const options = new DocumentBuilder()
