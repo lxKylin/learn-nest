@@ -1,53 +1,55 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-// import { InjectRepository } from '@nestjs/typeorm';
-// import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 
 @Injectable()
 export class UserService {
-  private users: User[] = [
-    {
-      id: 1,
-      username: 'Kylin',
-      password: '123456'
-    }
-  ]; // 暂时作为数据库
-  // constructor(
-  //   @InjectRepository(User)
-  //   private usersRepository: Repository<User>,
-  // ) {}
+  constructor(
+    // @InjectRepository(User)将自动生成的user存储库注入到userService
+    @InjectRepository(User)
+    private userRepository: Repository<User>
+  ) {}
 
   create(createUserDto: CreateUserDto) {
-    return `This action is by ${createUserDto.username}`;
+    const user = this.userRepository.create(createUserDto);
+    return this.userRepository.save(user);
   }
 
   findAll() {
-    return this.users;
-    // return `This action returns all user`;
-  }
-  // findAll(): Promise<User[]> {
-  //   return this.usersRepository.find();
-  // }
-
-  findOne(id: number) {
-    return this.users.find((item) => item.id == id);
+    return this.userRepository.find();
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    const user = this.users.find((item) => item.id == id);
-    if (user) {
+  async findOne(id) {
+    const user = await this.userRepository.findOneBy({ id });
+    if (!user) {
+      throw new NotFoundException(`${id} not found`);
     }
+    return user;
   }
 
-  remove(id: number) {
-    const index = this.users.findIndex((item) => item.id == id);
-    if (index >= 0) {
-      this.users.splice(index, 1);
+  async update(id: number, updateUserDto: UpdateUserDto) {
+    const user = await this.userRepository.preload({
+      id: id,
+      ...updateUserDto
+    });
+    if (!user) {
+      throw new NotFoundException(`${id} not found`);
     }
+    return this.userRepository.save(user);
   }
-  // async remove(id: number): Promise<void> {
-  //   await this.usersRepository.delete(id);
-  // }
+
+  async remove(id) {
+    console.log(id);
+    const user = await this.userRepository.findOneBy({ id });
+    console.log(user);
+    if (!user) {
+      throw new NotFoundException(`${id} not found`);
+    }
+    return this.userRepository.remove(user);
+
+    // return this.userRepository.delete(id); // 可以删
+  }
 }

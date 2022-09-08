@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-// import { TypeOrmModule } from '@nestjs/typeorm';
-// import { User } from './user/entities/user.entity';
-// import { Connection } from 'typeorm';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { User } from './user/entities/user.entity';
+import { Connection } from 'typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
@@ -12,17 +12,18 @@ import { UserModule } from './user/user.module';
  */
 @Module({
   imports: [
-    UserModule
-    // TypeOrmModule.forRoot({
-    //   type: 'mysql',
-    //   host: 'localhost',
-    //   port: 3306,
-    //   username: 'root',
-    //   password: 'root',
-    //   database: 'test',
-    //   entities: [User],
-    //   synchronize: true,
-    // }),
+    UserModule,
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      host: 'localhost',
+      port: 5432,
+      username: 'postgres', // PostgreSQL默认的设置
+      password: 'pass123',
+      database: 'postgres',
+      autoLoadEntities: true, // 自动加载模块
+      // entities: [User],
+      synchronize: true // 开启同步，生产中要禁止
+    })
   ], // 用于引入子模块
   // 1
   controllers: [AppController],
