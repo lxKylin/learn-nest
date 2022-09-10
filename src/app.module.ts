@@ -6,6 +6,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import { RoleModule } from './role/role.module';
+import { UserRatingModule } from './user-rating/user-rating.module';
 
 // nest中的模块装饰器
 /**

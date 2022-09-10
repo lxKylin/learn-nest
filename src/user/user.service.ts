@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PaginationQueryDto } from '@/common/dto/pagination-query.dto';
@@ -8,6 +8,15 @@ import { User } from './entities/user.entity';
 import { Role } from '@/role/entities/role.entity';
 import { Event } from '@/events/entities/event.entity';
 
+import { USER_ROLE } from '@/common/common.constants';
+
+/**
+ * 依赖注入有三个关键步骤
+ * 1、由@Injectable()装饰器声明一个可以由Nest容器管理的类
+ * @Injectable()装饰器将其标记为 提供者
+ * 2、控制器会请求这里的方法，这个请求告诉Nest将提供程序注入到控制器中
+ * 3、Nest知道this类也是一个提供者
+ */
 @Injectable()
 export class UserService {
   constructor(
@@ -18,8 +27,12 @@ export class UserService {
     private readonly roleRepository: Repository<Role>,
     // 使用connection来创建事物
     // Connection被重命名为DataSource
-    private readonly dataSource: DataSource
-  ) {}
+    private readonly dataSource: DataSource,
+    // 注入自定义提供程序使用的
+    @Inject(USER_ROLE) userRole: string[]
+  ) {
+    console.log(userRole); // test
+  }
 
   findAll(paginationQuery: PaginationQueryDto) {
     const { limit, offset } = paginationQuery;
