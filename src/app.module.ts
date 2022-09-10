@@ -10,6 +10,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import { RoleModule } from './role/role.module';
+import appConfig from './config/app.config';
 // import { UserRatingModule } from './user-rating/user-rating.module';
 
 // nest中的模块装饰器
@@ -32,9 +33,14 @@ import { RoleModule } from './role/role.module';
         DATABASE_PORT: Joi.number().default(5432) // 默认值
       })
     }),
+
     // ConfigModule.forRoot({
     //   envFilePath: '.environment', // 指定.environment文件
     //   ignoreEnvFile: true, // 忽略.env文件
+    // }),
+
+    // ConfigModule.forRoot({
+    //   load: [appConfig]
     // }),
     UserModule,
     TypeOrmModule.forRoot({

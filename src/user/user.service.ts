@@ -37,6 +37,7 @@ export class UserService {
   ) {
     console.log(userRole, 'userRole'); // test
     const dataBaseHost = this.configService.get<string>('DATABASE_HOST');
+    // const dataBaseHost = this.configService.get('database.host');
     console.log(dataBaseHost, 'dataBaseHost'); // test
   }
 
