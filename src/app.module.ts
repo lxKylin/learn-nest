@@ -21,6 +21,9 @@ import { RoleModule } from './role/role.module';
     /**
      * 默认情况下会解析根目录下的.env文件，并将其中的键值对分配给process.env的环境变量合并
      * 将合并结果存储在私有结构中，可以通过ConfigService类在任何位置访问该结构
+     * ConfigModule带有一个ConfigService，它提供一个get()方法来读取所有已解析的变量，
+     * 要注入ConfigService，需要在需要使用的地方先导入ConfigModule
+     * 在app.module中使用了forRoot()，在其他地方使用时不需要做任何事
      */
     ConfigModule.forRoot({
       // 校验传入的环境变量是否是正确格式

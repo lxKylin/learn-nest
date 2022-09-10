@@ -1,14 +1,17 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { PaginationQueryDto } from '@/common/dto/pagination-query.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, DataSource } from 'typeorm';
+import { ConfigService } from '@nestjs/config';
+
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
+
+import { PaginationQueryDto } from '@/common/dto/pagination-query.dto';
+import { USER_ROLE } from '@/common/common.constants';
+
 import { User } from './entities/user.entity';
 import { Role } from '@/role/entities/role.entity';
 import { Event } from '@/events/entities/event.entity';
-
-import { USER_ROLE } from '@/common/common.constants';
 
 /**
  * 依赖注入有三个关键步骤
@@ -28,10 +31,13 @@ export class UserService {
     // 使用connection来创建事物
     // Connection被重命名为DataSource
     private readonly dataSource: DataSource,
+    private readonly configService: ConfigService,
     // 注入自定义提供程序使用的
     @Inject(USER_ROLE) userRole: string[]
   ) {
-    console.log(userRole); // test
+    console.log(userRole, 'userRole'); // test
+    const dataBaseHost = this.configService.get<string>('DATABASE_HOST');
+    console.log(dataBaseHost, 'dataBaseHost'); // test
   }
 
   findAll(paginationQuery: PaginationQueryDto) {

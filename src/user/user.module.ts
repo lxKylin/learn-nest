@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule } from '@nestjs/config';
 
 import { UserService } from './user.service';
 
@@ -17,7 +18,7 @@ class DevelopmentConfigService {}
 class ProductionConfigService {}
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User, Role, Event])],
+  imports: [TypeOrmModule.forFeature([User, Role, Event]), ConfigModule],
   controllers: [UserController],
   // 完整写法
   // providers: [
