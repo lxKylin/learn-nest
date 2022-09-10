@@ -23,6 +23,9 @@ export class User {
   @Column()
   password: string;
 
+  @Column({ default: 0 })
+  recommendations: number;
+
   // @Column('json', { nullable: true })
   // 定义与其他表的关系
   @JoinTable()
