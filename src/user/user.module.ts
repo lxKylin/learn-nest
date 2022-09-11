@@ -6,6 +6,8 @@ import { UserService } from './user.service';
 
 import { UserController } from './user.controller';
 
+import usersConfig from './config/user.config';
+
 import { User } from './entities/user.entity';
 import { Role } from '@/role/entities/role.entity';
 import { Event } from '@/events/entities/event.entity';
@@ -18,7 +20,11 @@ class DevelopmentConfigService {}
 class ProductionConfigService {}
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User, Role, Event]), ConfigModule],
+  imports: [
+    TypeOrmModule.forFeature([User, Role, Event]),
+    ConfigModule.forFeature(usersConfig)
+  ],
+  // imports: [TypeOrmModule.forFeature([User, Role, Event]), ConfigModule],
   controllers: [UserController],
   // 完整写法
   // providers: [

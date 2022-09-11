@@ -1,10 +1,11 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, DataSource } from 'typeorm';
-import { ConfigService } from '@nestjs/config';
+import { ConfigService, ConfigType } from '@nestjs/config';
 
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import usersConfig from './config/user.config';
 
 import { PaginationQueryDto } from '@/common/dto/pagination-query.dto';
 import { USER_ROLE } from '@/common/common.constants';
@@ -33,12 +34,18 @@ export class UserService {
     private readonly dataSource: DataSource,
     private readonly configService: ConfigService,
     // 注入自定义提供程序使用的
-    @Inject(USER_ROLE) userRole: string[]
+    @Inject(USER_ROLE) userRole: string[],
+    @Inject(usersConfig.KEY)
+    private readonly usersConfiguration: ConfigType<typeof usersConfig>
   ) {
     console.log(userRole, 'userRole'); // test
     const dataBaseHost = this.configService.get<string>('DATABASE_HOST');
     // const dataBaseHost = this.configService.get('database.host');
     console.log(dataBaseHost, 'dataBaseHost'); // test
+    // const usersConfig = this.configService.get('users');
+    // 可以访问usersConfig配置的属性
+    // console.log(usersConfig, 'usersConfig'); // test
+    console.log(usersConfiguration.foo);
   }
 
   findAll(paginationQuery: PaginationQueryDto) {
