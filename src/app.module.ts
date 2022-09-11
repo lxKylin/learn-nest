@@ -1,5 +1,6 @@
-import { Module } from '@nestjs/common';
+import { Module, ValidationPipe } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { APP_PIPE } from '@nestjs/core';
 // 环境配置相关
 import { ConfigModule } from '@nestjs/config';
 // 校验环境变量
@@ -10,7 +11,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import { RoleModule } from './role/role.module';
-import appConfig from './config/app.config';
+// import appConfig from './config/app.config';
 // import { UserRatingModule } from './user-rating/user-rating.module';
 
 // nest中的模块装饰器
@@ -73,7 +74,14 @@ import appConfig from './config/app.config';
   // 1
   controllers: [AppController],
   // 2
-  providers: [AppService] // 数据来源，service层是连接数据库获取数据的
+  providers: [
+    AppService,
+    // 在AppModule的范围内实例化ValidationPipe，并在创建后将其注册为全局管道
+    {
+      provide: APP_PIPE,
+      useClass: ValidationPipe
+    }
+  ] // 数据来源，service层是连接数据库获取数据的
 })
 export class AppModule {
   // constructor(private readonly connection: Connection) {}

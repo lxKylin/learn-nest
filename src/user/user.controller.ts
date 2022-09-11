@@ -8,7 +8,9 @@ import {
   Delete,
   Query,
   HttpException,
-  HttpStatus
+  HttpStatus,
+  UsePipes,
+  ValidationPipe
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -16,6 +18,8 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { PaginationQueryDto } from '@/common/dto/pagination-query.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
+// 如果只想在user.controller中使用管道
+// @UsePipes(ValidationPipe)
 // 设置swagger文档标签分类
 @ApiTags('用户模块')
 // 使用装饰器修饰类（路由）
