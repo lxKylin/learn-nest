@@ -4,6 +4,7 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 import { AppModule } from './app.module';
 import { HttpExceptionFilter } from './common/filters/http-exception.filter';
+import { ApiKeyGuard } from './common/guards/api-key.guard';
 
 async function bootstrap() {
   // 创建nest应用 （引入根模块）
@@ -26,6 +27,9 @@ async function bootstrap() {
 
   // 全局过滤器
   app.useGlobalFilters(new HttpExceptionFilter());
+
+  // 鉴权
+  app.useGlobalGuards(new ApiKeyGuard());
 
   // 创建swagger接口文档
   const options = new DocumentBuilder()
