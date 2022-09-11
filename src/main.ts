@@ -5,6 +5,7 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 import { ApiKeyGuard } from './common/guards/api-key.guard';
+import { WrapResponseInterceptor } from './common/interceptors/wrap-response.interceptor';
 
 async function bootstrap() {
   // 创建nest应用 （引入根模块）
@@ -31,6 +32,8 @@ async function bootstrap() {
   // 鉴权
   // 依赖其他类的全局守卫必须在@Module上下文中注册，所以创建一个CommonModule
   // app.useGlobalGuards(new ApiKeyGuard());
+
+  app.useGlobalInterceptors(new WrapResponseInterceptor());
 
   // 创建swagger接口文档
   const options = new DocumentBuilder()
