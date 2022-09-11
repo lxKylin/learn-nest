@@ -43,17 +43,31 @@ import appConfig from './config/app.config';
     //   load: [appConfig]
     // }),
     UserModule,
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: process.env.DATABASE_HOST,
-      port: +process.env.DATABASE_PORT, // 来自process.env的每个值都是字符串，前面加+转数字
-      username: process.env.DATABASE_USER_NAME, // PostgreSQL默认的设置
-      password: process.env.DATABASE_PASSWORD,
-      database: process.env.DATABASE_NAME,
-      autoLoadEntities: true, // 自动加载模块
-      // entities: [User],
-      synchronize: true // 开启同步，生产中要禁止
+    // 使用异步工厂方式，解决imports的顺序问题
+    TypeOrmModule.forRootAsync({
+      useFactory: () => ({
+        type: 'postgres',
+        host: process.env.DATABASE_HOST,
+        port: +process.env.DATABASE_PORT, // 来自process.env的每个值都是字符串，前面加+转数字
+        username: process.env.DATABASE_USER_NAME, // PostgreSQL默认的设置
+        password: process.env.DATABASE_PASSWORD,
+        database: process.env.DATABASE_NAME,
+        autoLoadEntities: true, // 自动加载模块
+        // entities: [User],
+        synchronize: true // 开启同步，生产中要禁止
+      })
     }),
+    // TypeOrmModule.forRoot({
+    //   type: 'postgres',
+    //   host: process.env.DATABASE_HOST,
+    //   port: +process.env.DATABASE_PORT, // 来自process.env的每个值都是字符串，前面加+转数字
+    //   username: process.env.DATABASE_USER_NAME, // PostgreSQL默认的设置
+    //   password: process.env.DATABASE_PASSWORD,
+    //   database: process.env.DATABASE_NAME,
+    //   autoLoadEntities: true, // 自动加载模块
+    //   // entities: [User],
+    //   synchronize: true // 开启同步，生产中要禁止
+    // }),
     RoleModule
   ], // 用于引入子模块
   // 1
