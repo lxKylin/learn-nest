@@ -8,15 +8,18 @@ import {
   Delete,
   Query,
   HttpException,
-  HttpStatus,
-  UsePipes,
-  ValidationPipe
+  HttpStatus
+  // UsePipes,
+  // ValidationPipe,
+  // SetMetadata
 } from '@nestjs/common';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
+
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PaginationQueryDto } from '@/common/dto/pagination-query.dto';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Public } from '@/common/decorators/public.decorator';
 
 // 如果只想在user.controller中使用管道
 // @UsePipes(ValidationPipe)
@@ -39,6 +42,8 @@ export class UserController {
   }
 
   @Get()
+  @Public() // 最佳实践方式，自定义装饰器，可复用
+  // @SetMetadata('isPublic', true) // 不是最佳方式
   findAll(@Query() paginationQuery: PaginationQueryDto) {
     return this.userService.findAll(paginationQuery);
   }

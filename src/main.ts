@@ -29,7 +29,8 @@ async function bootstrap() {
   app.useGlobalFilters(new HttpExceptionFilter());
 
   // 鉴权
-  app.useGlobalGuards(new ApiKeyGuard());
+  // 依赖其他类的全局守卫必须在@Module上下文中注册，所以创建一个CommonModule
+  // app.useGlobalGuards(new ApiKeyGuard());
 
   // 创建swagger接口文档
   const options = new DocumentBuilder()

@@ -13,6 +13,7 @@ import { UserModule } from './user/user.module';
 import { RoleModule } from './role/role.module';
 // import appConfig from './config/app.config';
 // import { UserRatingModule } from './user-rating/user-rating.module';
+import { CommonModule } from './common/common.module';
 
 // nest中的模块装饰器
 /**
@@ -69,7 +70,8 @@ import { RoleModule } from './role/role.module';
     //   // entities: [User],
     //   synchronize: true // 开启同步，生产中要禁止
     // }),
-    RoleModule
+    RoleModule,
+    CommonModule
   ], // 用于引入子模块
   // 1
   controllers: [AppController],
